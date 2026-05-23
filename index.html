@@ -200,23 +200,121 @@
         .scroll-img { flex: 0 0 auto; height: 320px; width: auto; max-width: 90vw; object-fit: contain; border-radius: 8px; border: 1px solid #eaeaea; background: #fff; cursor: pointer; scroll-snap-align: start; transition: 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .scroll-img:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); border-color: var(--accent-color); }
 
-        /* ================= 互動式流程圖 ================= */
-        .workflow-title-box { text-align: center; margin: 30px 0 20px 0; color: var(--workflow-dark); font-size: 1.4rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .workflow-title-box::before, .workflow-title-box::after { content: ''; display: block; width: 50px; height: 2px; background-color: var(--workflow-green); }
-        .workflow-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 10px; }
-        .workflow-step { border: 2px solid var(--workflow-green); border-radius: 12px; padding: 15px 10px; background: #fff; text-align: center; width: 130px; position: relative; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; }
-        .step-number { background-color: var(--workflow-green); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; transition: 0.3s; }
-        .step-icon { font-size: 2.5rem; color: var(--workflow-dark); margin-bottom: 15px; height: 40px; display: flex; align-items: center; justify-content: center; }
-        .step-divider { border-top: 3px dotted var(--workflow-green); width: 80%; margin: 10px auto; opacity: 0.5; }
-        .step-title { color: var(--workflow-dark); font-weight: bold; font-size: 0.95rem; }
-        .step-subtitle { color: var(--workflow-dark); font-size: 0.85rem; }
-        .workflow-arrow { color: var(--workflow-green); font-size: 1.2rem; }
-        .clickable-step { cursor: pointer; }
-        .clickable-step:hover { transform: translateY(-8px); box-shadow: 0 10px 20px rgba(97, 152, 138, 0.25); border-color: var(--accent-color); }
-        .clickable-step:hover .step-number { background-color: var(--accent-color); }
-        .clickable-step::after { content: '\f00e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: -10px; right: -10px; background: var(--accent-color); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; opacity: 0; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .clickable-step:hover::after { opacity: 1; }
+        /* ================= 互動式流程圖 (圖示+底部截圖版) ================= */
+        .workflow-title-box { 
+            margin: 35px 0 20px 0; 
+            color: var(--sidebar-bg); /* 改用深藍色，與其他標題統一視覺 */
+            font-size: 1.25rem; 
+            font-weight: bold; 
+            letter-spacing: 1px; /* 增加字距讓標題更有質感 */
+        }
+        /* 註：已經徹底移除 ::before 與 ::after 的綠色線條 */
+        .workflow-visual-container { 
+            display: flex; 
+            align-items: stretch; /* 讓所有卡片等高 */
+            justify-content: space-between; 
+            margin-bottom: 30px; 
+            gap: 12px; 
+        }
+        .workflow-visual-step { 
+            flex: 1; 
+            background: #fff; 
+            border: 2px solid var(--workflow-green); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            position: relative;
+            padding-top: 25px; /* 給頂部 Icon 留出空間 */
+            transition: all 0.3s ease; 
+        }
+        .workflow-visual-step:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(97, 152, 138, 0.2); 
+            border-color: var(--accent-color); 
+        }
+        .workflow-step-badge { 
+            position: absolute; 
+            top: 8px; 
+            left: 8px; 
+            background-color: var(--workflow-green); 
+            color: white; 
+            width: 26px; 
+            height: 26px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 0.95rem; 
+            z-index: 2; 
+            transition: 0.3s;
+        }
+        .workflow-visual-step:hover .workflow-step-badge { 
+            background-color: var(--accent-color); 
+        }
+        .workflow-icon-box {
+            font-size: 2.2rem;
+            color: var(--workflow-dark);
+            margin-bottom: 8px;
+        }
+        .workflow-info { 
+            padding: 0 8px 12px 8px; 
+            text-align: center; 
+        }
+        .workflow-info .step-title { 
+            color: var(--workflow-dark); 
+            font-weight: bold; 
+            font-size: 1.05rem; 
+            margin-bottom: 2px;
+        }
+        .workflow-info .step-subtitle { 
+            color: #666; 
+            font-size: 0.85rem; 
+        }
+        .workflow-real-img {
+            width: 100%;
+            flex-grow: 1; 
+            background-color: #f7f9f8;
+            border-top: 1px dashed #d1dfdb;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+        }
+        .workflow-real-img img {
+            width: 100%;
+            aspect-ratio: 4 / 3; /* 🌟 強制固定統一長寬比例，讓所有圖片一樣大 */
+            object-fit: cover;   /* 🌟 讓圖片填滿整個框框，不留白 */
+            object-position: top center; /* 🌟 聚焦在截圖的上半部，確保軟體選單不會被切掉 */
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: block;
+        }
+        .workflow-visual-arrow { 
+            color: var(--workflow-green); 
+            font-size: 1.2rem; 
+            flex-shrink: 0;
+            align-self: center; /* 讓箭頭在垂直方向置中 */
+        }
 
+        /* 手機版適應 */
+        @media (max-width: 850px) {
+            .workflow-visual-container { 
+                flex-direction: column; 
+                align-items: center;
+                gap: 15px; 
+            } 
+            .workflow-visual-step { 
+                width: 100%; 
+                max-width: 300px; 
+            }
+            .workflow-visual-arrow { 
+                transform: rotate(90deg); 
+                align-self: center;
+            } 
+        }
         /* ================= 圖片/文章彈出視窗 (Modal共用外觀) ================= */
         .image-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; flex-direction: column; }
         .modal-content { max-width: 90%; max-height: 85vh; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease; }
@@ -552,15 +650,15 @@ A DAY Cafe（初訪）
                         <span class="swipe-hint"><i class="fa-solid fa-angles-right"></i> 向右滑動查看</span>
                     </div>
                     <div class="horizontal-scroll-container">
-                        <img src="img/10_0.png" alt="贊助廠商1" class="scroll-img" onclick="openImageModal('img/10_0.png', '社群圖文模板－贊助廠商 01')">
-                        <img src="img/11_0.png" alt="贊助廠商2" class="scroll-img" onclick="openImageModal('img/11_0.png', '社群圖文模板－贊助廠商 02')">
+                        <img src="img/17_0.png" alt="贊助廠商1" class="scroll-img" onclick="openImageModal('img/17_0.png', '社群圖文模板－贊助廠商 01')">
+                        <img src="img/18_0.png" alt="贊助廠商2" class="scroll-img" onclick="openImageModal('img/18_0.png', '社群圖文模板－贊助廠商 02')">
                         <img src="img/12_0.png" alt="贊助廠商3" class="scroll-img" onclick="openImageModal('img/12_0.png', '社群圖文模板－贊助廠商 03')">
                         <img src="img/13_0.png" alt="贊助廠商4" class="scroll-img" onclick="openImageModal('img/13_0.png', '社群圖文模板－贊助廠商 04')">
                         <img src="img/14_0.png" alt="贊助廠商5" class="scroll-img" onclick="openImageModal('img/14_0.png', '社群圖文模板－贊助廠商 05')">
                         <img src="img/15_0.png" alt="贊助廠商6" class="scroll-img" onclick="openImageModal('img/15_0.png', '社群圖文模板－贊助廠商 06')">
                         <img src="img/16_0.png" alt="贊助廠商7" class="scroll-img" onclick="openImageModal('img/16_0.png', '社群圖文模板－贊助廠商 07')">
-                        <img src="img/17_0.png" alt="贊助廠商8" class="scroll-img" onclick="openImageModal('img/17_0.png', '社群圖文模板－贊助廠商 08')">
-                        <img src="img/18_0.png" alt="贊助廠商9" class="scroll-img" onclick="openImageModal('img/18_0.png', '社群圖文模板－贊助廠商 09')">
+                        <img src="img/10_0.png" alt="贊助廠商8" class="scroll-img" onclick="openImageModal('img/10_0.png', '社群圖文模板－贊助廠商 08')">
+                        <img src="img/11_0.png" alt="贊助廠商9" class="scroll-img" onclick="openImageModal('img/11_0.png', '社群圖文模板－贊助廠商 09')">
                     </div>
                 </div>
             </div>
@@ -591,53 +689,76 @@ A DAY Cafe（初訪）
                 <p><span class="highlight">專案成效：</span> 成功打破單一軟體限制，將冗長的後製與排版時間大幅壓縮，高效產出具備專業質感的結構化多媒體教材。此專案不僅證明了我的數位工具整合能力，更實證了如何靈活運用 AI 優化日常營運流程，完美契合未來職場對 AI 協作力 (AI Readiness) 的要求。</p>
                 
                 <div class="workflow-title-box">影片製作流程</div>
-                <div class="workflow-container">
-                    <div class="workflow-step clickable-step" onclick="openImageModal('img/step1.png', '影片錄製畫面')">
-                        <div class="step-number">1</div>
-                        <div class="step-icon"><i class="fa-solid fa-video"></i></div>
-                        <div class="step-divider"></div>
-                        <div class="step-title">影片錄製</div>
+                <div class="workflow-visual-container">
+                    <div class="workflow-visual-step">
+                        <div class="workflow-step-badge">1</div>
+                        <div class="workflow-icon-box"><i class="fa-solid fa-video"></i></div>
+                        <div class="workflow-info">
+                            <div class="step-title">影片錄製</div>
+                            <div class="step-subtitle" style="visibility: hidden;">(對齊用)</div>
+                        </div>
+                        <div class="workflow-real-img">
+                            <img src="img/step1.png" alt="影片錄製畫面" onerror="this.style.display='none'">
+                        </div>
                     </div>
-                    <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                    <div class="workflow-step clickable-step" onclick="openImageModal('img/step2.png', 'CapCut 智慧上字幕')">
-                        <div class="step-number">2</div>
-                        <div class="step-icon"><i class="fa-regular fa-comment-dots"></i></div>
-                        <div class="step-divider"></div>
-                        <div class="step-title">CapCut</div>
-                        <div class="step-subtitle">(上字幕)</div>
+
+                    <div class="workflow-visual-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+                    <div class="workflow-visual-step">
+                        <div class="workflow-step-badge">2</div>
+                        <div class="workflow-icon-box"><i class="fa-solid fa-comment-dots"></i></div>
+                        <div class="workflow-info">
+                            <div class="step-title">CapCut</div>
+                            <div class="step-subtitle">(上字幕)</div>
+                        </div>
+                        <div class="workflow-real-img">
+                            <img src="img/step2.png" alt="CapCut 截圖" onerror="this.style.display='none'">
+                        </div>
                     </div>
-                    <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                    <div class="workflow-step clickable-step" onclick="openImageModal('img/step3.png', 'Gemini 生成影片時間軸')">
-                        <div class="step-number">3</div>
-                        <div class="step-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <div class="step-divider"></div>
-                        <div class="step-title">Gemini</div>
-                        <div class="step-subtitle">(抓時間軸)</div>
+
+                    <div class="workflow-visual-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+                    <div class="workflow-visual-step">
+                        <div class="workflow-step-badge">3</div>
+                        <div class="workflow-icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <div class="workflow-info">
+                            <div class="step-title">Gemini</div>
+                            <div class="step-subtitle">(抓時間軸)</div>
+                        </div>
+                        <div class="workflow-real-img">
+                            <img src="img/step3.png" alt="Gemini 截圖" onerror="this.style.display='none'">
+                        </div>
                     </div>
-                    <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                    <div class="workflow-step clickable-step" onclick="openImageModal('img/step4.png', 'Gamma 自動生成簡報')">
-                        <div class="step-number">4</div>
-                        <div class="step-icon"><i class="fa-solid fa-chart-pie"></i></div>
-                        <div class="step-divider"></div>
-                        <div class="step-title">Gamma</div>
-                        <div class="step-subtitle">(生成簡報)</div>
+
+                    <div class="workflow-visual-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+                    <div class="workflow-visual-step">
+                        <div class="workflow-step-badge">4</div>
+                        <div class="workflow-icon-box"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div class="workflow-info">
+                            <div class="step-title">Gamma</div>
+                            <div class="step-subtitle">(生成簡報)</div>
+                        </div>
+                        <div class="workflow-real-img">
+                            <img src="img/step4.png" alt="Gamma 截圖" onerror="this.style.display='none'">
+                        </div>
                     </div>
-                    <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                    <div class="workflow-step">
-                        <div class="step-number">5</div>
-                        <div class="step-icon"><i class="fa-solid fa-palette"></i></div>
-                        <div class="step-divider"></div>
-                        <div class="step-title">Canva</div>
-                        <div class="step-subtitle">(美感微調)</div>
+                    
+
+                    <div class="workflow-visual-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+                    <div class="workflow-visual-step">
+                        <div class="workflow-step-badge">5</div>
+                        <div class="workflow-icon-box"><i class="fa-solid fa-palette"></i></div>
+                        <div class="workflow-info">
+                            <div class="step-title">Canva</div>
+                            <div class="step-subtitle">(美感微調)</div>
+                        </div>
+                        <div class="workflow-real-img">
+                            <img src="img/canva.jpg" alt="Canva 截圖" onerror="this.style.display='none'">
+                        </div>
                     </div>
                 </div>
-
-                <p style="text-align: center; margin-top: 30px;">
-                    <a href="https://youtu.be/Wcchm-v301s" target="_blank" style="color: var(--accent-color); text-decoration: none; font-weight: bold; padding: 10px 20px; border: 2px solid var(--accent-color); border-radius: 30px; transition: 0.3s; display: inline-block;">
-                        <i class="fa-brands fa-youtube"></i> 點此前往 YouTube 觀看教學
-                    </a>
-                </p>
-            </div>
             <div class="project-card">
                 <h3>專案二: 建築設計專案的高階視覺化提案</h3>
                 <p><span class="highlight">背景與挑戰：</span> 參與大型公部門標案時，內部同仁產出的初始提案簡報往往充滿繁雜文字，或僅用粗糙的牽線來標示照片重點。這種枯燥且缺乏設計感的排版，導致資訊可讀性極低，容易削弱事務所在提案時的專業度與競爭力。</p>
